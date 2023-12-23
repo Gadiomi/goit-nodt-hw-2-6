@@ -11,9 +11,9 @@ const getContactById = async (req, res) => {
 
   const result = await contacts.getContactById(contactId);
   if (!result) {
-    return res.status(404).json({ status: 404, message: "Not found" });
+    throw HttpError(404, "Not found");
   }
-  res.status(200).json({ status: 200, result });
+  res.status(200).json(result);
 };
 
 const addContact = async (req, res) => {
@@ -21,14 +21,14 @@ const addContact = async (req, res) => {
   if (!result) {
     throw HttpError(400);
   }
-  res.status(201).json({ status: 201, result: result[result.length - 1] });
+  res.status(201).json(result[result.length - 1]);
 };
 
 const removeContact = async (req, res, next) => {
   const { contactId } = req.params;
   const result = await contacts.removeContact(contactId);
   if (!result) {
-    return res.status(404).json({ status: 404, message: "Not found" });
+    throw HttpError(404, "Not found");
   }
   return res.status(200).json({
     message: "contact deleted",
@@ -37,12 +37,16 @@ const removeContact = async (req, res, next) => {
 
 const updateContact = async (req, res) => {
   const { contactId } = req.params;
+  if (!req.body || Object.keys(req.body).length === 0) {
+    throw HttpError(400, "missing fields");
+  }
+
   const result = await contacts.updateContact(contactId, req.body);
   if (!result) {
     throw HttpError(400, "Not found");
   }
   const [updatedContact] = result;
-  res.status(200).json({ status: 200, result: updatedContact });
+  res.status(200).json(updatedContact);
 };
 
 module.exports = {
