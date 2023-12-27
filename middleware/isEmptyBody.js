@@ -1,11 +1,12 @@
-const { HttpError } = require("../helpers");
+const { isValidObjectId } = require("mongoose");
+const HttpError = require("../helpers/HttpError");
 
-const isEmptyBody = async (req, res, next) => {
-  const { length } = Object.keys(req.body);
-  if (!length) {
-    return next(HttpError(400, "missing fields"));
+const isEmptyBody = (req, res, next) => {
+  const { id } = req.params;
+  if (!isValidObjectId(id)) {
+    next(HttpError(500, `${id} is not valid id`));
   }
   next();
 };
 
-module.exports = { isEmptyBody };
+module.exports = isEmptyBody;
