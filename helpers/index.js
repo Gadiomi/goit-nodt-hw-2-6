@@ -1,3 +1,4 @@
 const HttpError = require("./HttpError");
 const contWrapper = require("./contWrapper");
-module.exports = { HttpError, contWrapper };
+const mongooseError = require("./mongooseError");
+module.exports = { HttpError, contWrapper, mongooseError };
