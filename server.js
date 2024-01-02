@@ -8,7 +8,7 @@ mogoose.set("strictQuery", true);
 mogoose
   .connect(DB_HOST)
   .then(() => {
-    app.listen(6000);
+    app.listen(3000);
     console.log("Database connection successful");
   })
   .catch((error) => {
