@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const mongooseError = require("../helpers/mongooseError");
+const handleMongooseError = require("../helpers/mongooseError");
 const Joi = require("joi");
 
 const phoneRegexp = /^\(\d{3}[- _]*\) \d{3}-\d{4}$/;
@@ -30,9 +30,10 @@ const addSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().required(),
   phone: Joi.string().pattern(phoneRegexp).required(),
+  // favorite: Joi.boolean(),
 });
 
-contactSchema.post("save", mongooseError);
+contactSchema.post("save", handleMongooseError);
 
 const schema = {
   addSchema,
